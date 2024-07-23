@@ -8,6 +8,8 @@ const certificadosRouter = require('./routes/certificados');
 const parcelasRouter = require('./routes/parcelas');
 const preguntasRouter = require('./routes/preguntas');
 const productoresRouter = require('./routes/productores');
+const authRoutes = require('./routes/auth'); // Asegúrate de tener esta ruta correctamente
+
 const helmet = require('helmet');
 const cors = require('cors');
 
@@ -34,9 +36,9 @@ app.use('/uploads', express.static('uploads')); // Sirve archivos estáticos des
 
 // Seguridad básica
 app.use(helmet());
+
+// CORS (si necesitas permitir peticiones desde diferentes dominios)
 app.use(cors());
-
-
 
 // Conectar a MongoDB
 const dbUri = 'mongodb://localhost:27017/Cafebd'; // Reemplaza con el nombre de tu base de datos
@@ -59,6 +61,8 @@ app.use('/preguntas', preguntasRouter);
 
 // Usar las rutas de productores
 app.use('/productores', productoresRouter(upload));
+
+app.use('/auth', authRoutes);
 
 // Define una ruta simple
 app.get('/', (req, res) => {
