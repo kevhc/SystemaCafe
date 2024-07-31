@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -9,6 +10,7 @@ const parcelasRouter = require('./routes/parcelas');
 const preguntasRouter = require('./routes/preguntas');
 const productoresRouter = require('./routes/productores');
 const authRoutes = require('./routes/auth'); // Asegúrate de tener esta ruta correctamente
+require('dotenv').config();
 
 const helmet = require('helmet');
 const cors = require('cors');
@@ -40,11 +42,10 @@ app.use(helmet());
 // CORS (si necesitas permitir peticiones desde diferentes dominios)
 app.use(cors());
 
-// Conectar a MongoDB
-const dbUri = 'mongodb://localhost:27017/Cafebd'; // Reemplaza con el nombre de tu base de datos
-mongoose.connect(dbUri)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+// Conexión a MongoDB
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('MongoDB connected bien'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Usar las rutas de notas
 app.use('/notes', notesRouter);
@@ -66,7 +67,7 @@ app.use('/auth', authRoutes);
 
 // Define una ruta simple
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('hola mundo querido');
 });
 
 // Manejo de errores 404
