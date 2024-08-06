@@ -19,17 +19,7 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Configuración de almacenamiento de multer para manejar archivos subidos
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
 
-const upload = multer({ storage: storage });
 
 // Middleware
 app.use(express.json());
@@ -61,7 +51,7 @@ app.use('/parcelas', parcelasRouter);
 app.use('/preguntas', preguntasRouter);
 
 // Usar las rutas de productores
-app.use('/productores', productoresRouter(upload));
+app.use('/productores', productoresRouter);
 
 app.use('/auth', authRoutes);
 
