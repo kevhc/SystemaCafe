@@ -77,7 +77,12 @@ router.get('/me', authMiddleware(), async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json({ nombre: user.nombre });
+
+        // Devolver la información del usuario incluyendo la URL completa de la foto
+        res.json({
+            nombre: user.nombre,
+            foto: user.foto ? `http://10.0.2.2:3000/uploads/usuarios/${path.basename(user.foto)}` : null
+        });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
