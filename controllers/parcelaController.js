@@ -1,9 +1,7 @@
-const express = require('express');
-const router = express.Router();
 const Parcela = require('../models/Parcela');
 
 // Crear una nueva parcela
-router.post('/', async (req, res) => {
+exports.crearParcela = async (req, res) => {
     const {
         id,
         dni,
@@ -64,20 +62,20 @@ router.post('/', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
+};
 
 // Obtener todas las parcelas
-router.get('/', async (req, res) => {
+exports.obtenerParcelas = async (req, res) => {
     try {
         const parcelas = await Parcela.find();
         res.json(parcelas);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
+};
 
 // Obtener una parcela por ID
-router.get('/:id', async (req, res) => {
+exports.obtenerParcelaPorId = async (req, res) => {
     try {
         const parcela = await Parcela.findById(req.params.id);
         if (!parcela) return res.status(404).json({ message: 'Parcela no encontrada' });
@@ -85,10 +83,10 @@ router.get('/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
+};
 
 // Actualizar una parcela por ID
-router.put('/:id', async (req, res) => {
+exports.actualizarParcelaPorId = async (req, res) => {
     try {
         const parcelaActualizada = await Parcela.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!parcelaActualizada) return res.status(404).json({ message: 'Parcela no encontrada' });
@@ -96,10 +94,10 @@ router.put('/:id', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
+};
 
 // Eliminar una parcela por ID
-router.delete('/:id', async (req, res) => {
+exports.eliminarParcelaPorId = async (req, res) => {
     try {
         const parcelaEliminada = await Parcela.findByIdAndDelete(req.params.id);
         if (!parcelaEliminada) return res.status(404).json({ message: 'Parcela no encontrada' });
@@ -107,6 +105,4 @@ router.delete('/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-module.exports = router;
+};

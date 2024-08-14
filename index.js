@@ -5,11 +5,12 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
 const notesRouter = require('./routes/notes');
-const certificadosRouter = require('./routes/certificados');
-const parcelasRouter = require('./routes/parcelas');
-const preguntasRouter = require('./routes/preguntas');
-const productoresRouter = require('./routes/productores');
-const authRoutes = require('./routes/auth'); // Asegúrate de tener esta ruta correctamente
+const certificadosRouter = require('./routes/certificadoRoutes');
+const parcelasRouter = require('./routes/parcelaRoutes');
+const preguntasRouter = require('./routes/preguntaRoutes');
+const productoresRouter = require('./routes/productorRoutes');
+const authRoutes = require('./routes/authRoutes'); // Asegúrate de usar el nombre correcto de la ruta para autenticación
+const usuarioRoutes = require('./routes/usuarioRoutes'); // Ruta para la gestión de usuarios
 require('dotenv').config();
 
 const helmet = require('helmet');
@@ -24,7 +25,13 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use('/uploads', express.static('uploads')); // Sirve archivos estáticos desde la carpeta uploads
+
+
+// Configurar la carpeta estática para servir imágenes subidas
+app.use('/uploads/productores', express.static(path.join(__dirname, 'uploads', 'productores')));
+
 
 // Seguridad básica
 app.use(helmet());
@@ -52,6 +59,9 @@ app.use('/preguntas', preguntasRouter);
 
 // Usar las rutas de productores
 app.use('/productores', productoresRouter);
+
+// Usar las rutas de usuarios
+app.use('/usuarios', usuarioRoutes);
 
 app.use('/auth', authRoutes);
 

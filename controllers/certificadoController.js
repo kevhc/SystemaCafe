@@ -1,15 +1,9 @@
-const express = require('express');
-const router = express.Router();
 const Certificado = require('../models/Certificado');
 
 // Crear un nuevo certificado
-router.post('/', async (req, res) => {
+exports.createCertificado = async (req, res) => {
     const { certificado, fecha, estado } = req.body;
-    const nuevoCertificado = new Certificado({
-        certificado,
-        fecha,
-        estado
-    });
+    const nuevoCertificado = new Certificado({ certificado, fecha, estado });
 
     try {
         const certificadoGuardado = await nuevoCertificado.save();
@@ -17,20 +11,20 @@ router.post('/', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
+};
 
 // Obtener todos los certificados
-router.get('/', async (req, res) => {
+exports.getAllCertificados = async (req, res) => {
     try {
         const certificados = await Certificado.find();
         res.json(certificados);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
+};
 
 // Obtener un certificado por ID
-router.get('/:id', async (req, res) => {
+exports.getCertificadoById = async (req, res) => {
     try {
         const certificado = await Certificado.findById(req.params.id);
         if (!certificado) return res.status(404).json({ message: 'Certificado no encontrado' });
@@ -38,10 +32,10 @@ router.get('/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
+};
 
 // Actualizar un certificado por ID
-router.put('/:id', async (req, res) => {
+exports.updateCertificado = async (req, res) => {
     try {
         const certificadoActualizado = await Certificado.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!certificadoActualizado) return res.status(404).json({ message: 'Certificado no encontrado' });
@@ -49,10 +43,10 @@ router.put('/:id', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
+};
 
 // Eliminar un certificado por ID
-router.delete('/:id', async (req, res) => {
+exports.deleteCertificado = async (req, res) => {
     try {
         const certificadoEliminado = await Certificado.findByIdAndDelete(req.params.id);
         if (!certificadoEliminado) return res.status(404).json({ message: 'Certificado no encontrado' });
@@ -60,6 +54,4 @@ router.delete('/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-module.exports = router;
+};
